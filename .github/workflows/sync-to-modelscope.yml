@@ -94,8 +94,9 @@ jobs:
           git remote remove modelscope 2>/dev/null || true
           git remote add modelscope "$AUTHED_URL"
 
-          if ! git push modelscope refs/heads/master:refs/heads/master --force; then
+          if ! git push modelscope refs/heads/master:refs/heads/master; then
             echo "Branch sync failed. Dumping diagnostics."
+            echo "Possible causes: protected branch, non-fast-forward history, or missing write permission."
             echo "--- git remote -v (token masked) ---"
             git remote -v
             echo "--- git status --short ---"
@@ -107,10 +108,11 @@ jobs:
             exit 1
           fi
 
-          if ! git push modelscope --tags --force; then
+          if ! git push modelscope --tags; then
             echo "Tag sync failed. Confirm the token can push tags on ModelScope."
             exit 1
           fi
+
 
           git remote remove modelscope
 
