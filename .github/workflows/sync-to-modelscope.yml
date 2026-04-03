@@ -22,7 +22,8 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -34,13 +35,16 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -z "${MODELSCOPE_TOKEN:-}" ]]; then
-            echo "MODELSCOPE_TOKEN 涓虹┖锛屽綋鍓嶅伐浣滄祦鏃犳硶鍚屾鍒伴瓟鎼€?
-            echo "璇锋鏌?GitHub 浠撳簱 Settings -> Secrets and variables -> Actions锛?
-            echo "1. Secret 鍚嶇О蹇呴』鏄?MODELSCOPE_TOKEN"
-            echo "2. Secret 鍊奸渶瑕侀噸鏂扮矘璐村苟淇濆瓨锛屼笉鑳芥槸绌哄€?
-            echo "3. 濡傛灉鍒氬垱寤?Secret锛岃绛夊緟鍑犵鍚庨噸鏂拌繍琛屽伐浣滄祦"
+            echo "MODELSCOPE_TOKEN is empty."
+            echo "Check GitHub repo Settings -> Secrets and variables -> Actions."
+            echo "1. Secret name must be MODELSCOPE_TOKEN"
+            echo "2. Secret value must be saved and non-empty"
+            echo "3. If you just updated it, wait a few seconds and rerun the workflow"
             exit 1
           fi
+
+          echo "MODELSCOPE_TOKEN is available to this workflow."
+
 
 
       - name: Show sync context
@@ -69,12 +73,15 @@ jobs:
           echo "::add-mask::$MODELSCOPE_TOKEN"
           AUTHED_URL="https://oauth2:${MODELSCOPE_TOKEN}@www.modelscope.cn/anolei/sme-checkup.git"
           if ! git ls-remote "$AUTHED_URL" >/dev/null 2>&1; then
-            echo "鏃犳硶璁块棶榄旀惌浠撳簱锛岃妫€鏌ワ細"
-            echo "1. 榄旀惌浠撳簱 anolei/sme-checkup 鏄惁宸插垱寤?
-            echo "2. MODELSCOPE_TOKEN 鏄惁鏈夋晥涓斿叿澶囧啓鏉冮檺"
-            echo "3. 浠撳簱鍦板潃鏄惁涓庡綋鍓嶅伐浣滄祦涓殑 MODELSCOPE_REPO 涓€鑷?
+            echo "Cannot access the ModelScope repository."
+            echo "1. Confirm anolei/sme-checkup already exists on ModelScope"
+            echo "2. Confirm MODELSCOPE_TOKEN is valid and has write access"
+            echo "3. Confirm the repository URL matches MODELSCOPE_REPO"
             exit 1
           fi
+
+          echo "ModelScope remote is reachable."
+
 
       - name: Push branch to ModelScope
         shell: bash
@@ -88,8 +95,8 @@ jobs:
           git remote add modelscope "$AUTHED_URL"
 
           if ! git push modelscope refs/heads/master:refs/heads/master --force; then
-            echo "鍒嗘敮鍚屾澶辫触锛屽紑濮嬭緭鍑烘帓閿欎俊鎭€?
-            echo "--- git remote -v (token 宸叉帺鐮? ---"
+            echo "Branch sync failed. Dumping diagnostics."
+            echo "--- git remote -v (token masked) ---"
             git remote -v
             echo "--- git status --short ---"
             git status --short
@@ -101,16 +108,18 @@ jobs:
           fi
 
           if ! git push modelscope --tags --force; then
-            echo "鏍囩鍚屾澶辫触锛岃纭榄旀惌绔槸鍚﹀厑璁稿綋鍓嶅嚟璇佹帹閫佹爣绛俱€?
+            echo "Tag sync failed. Confirm the token can push tags on ModelScope."
             exit 1
           fi
 
           git remote remove modelscope
 
+
       - name: Sync summary
         shell: bash
         run: |
           set -euo pipefail
-          echo "宸插畬鎴?GitHub -> 榄旀惌闀滃儚鍚屾銆?
-          echo "鐩爣浠撳簱: $MODELSCOPE_REPO"
-          echo "鎻愪氦: $(git rev-parse --short HEAD)"
+          echo "GitHub -> ModelScope mirror sync completed."
+          echo "Target repository: $MODELSCOPE_REPO"
+          echo "Commit: $(git rev-parse --short HEAD)"
+
