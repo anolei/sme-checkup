@@ -34,9 +34,14 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -z "${MODELSCOPE_TOKEN:-}" ]]; then
-            echo "MODELSCOPE_TOKEN 鏈厤缃紝鏃犳硶鍚屾鍒伴瓟鎼€?
+            echo "MODELSCOPE_TOKEN 涓虹┖锛屽綋鍓嶅伐浣滄祦鏃犳硶鍚屾鍒伴瓟鎼€?
+            echo "璇锋鏌?GitHub 浠撳簱 Settings -> Secrets and variables -> Actions锛?
+            echo "1. Secret 鍚嶇О蹇呴』鏄?MODELSCOPE_TOKEN"
+            echo "2. Secret 鍊奸渶瑕侀噸鏂扮矘璐村苟淇濆瓨锛屼笉鑳芥槸绌哄€?
+            echo "3. 濡傛灉鍒氬垱寤?Secret锛岃绛夊緟鍑犵鍚庨噸鏂拌繍琛屽伐浣滄祦"
             exit 1
           fi
+
 
       - name: Show sync context
         shell: bash
