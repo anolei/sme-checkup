@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-申报书体检报告自我复核脚本（开源版）
+企业自检报告复核脚本（开源版）
 严格按照 SKILL.md 阶段六的 14 项复核清单逐项检测。
 
 使用方法：
@@ -13,20 +13,6 @@
 
 import sys
 from pathlib import Path
-
-
-def configure_output_streams():
-    """避免 Windows 默认 GBK 控制台在输出 emoji 时触发 UnicodeEncodeError。"""
-    for stream_name in ("stdout", "stderr"):
-        stream = getattr(sys, stream_name, None)
-        if hasattr(stream, "reconfigure"):
-            try:
-                stream.reconfigure(errors="replace")
-            except ValueError:
-                pass
-
-
-configure_output_streams()
 
 
 def check_content(report_path):
@@ -63,7 +49,7 @@ def check_content(report_path):
     if '维度一' not in content and '维度二' not in content and '双维度' not in content:
         issues.append("[6] 缺少双维度产业定位评判（维度一/维度二分析表格）")
 
-    # ── 7. E-01 产业链配套找茬与改写骨架 ──
+    # ── 7. E-01 产业链配套诊断与改写骨架 ──
     if '产业链' not in content:
         issues.append("[7] 缺少产业链配套描述的诊断与改写建议")
 
@@ -79,7 +65,7 @@ def check_content(report_path):
 
     # ── 10. E-04 主导产品名称推导 + 级联一致性 ──
     if '主导产品' not in content and '产品名称' not in content:
-        warnings.append("[10] 未发现主导产品名称的诊断与升维推导")
+        warnings.append("[10] 未发现主导产品名称的诊断与优化推导")
 
     # ── 11. 分级修改建议（🔴🟡🟢）──
     triage_keywords = ['优先修正', '审核警告', '优化建议', '🔴', '🟡', '🟢']

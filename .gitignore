@@ -1,60 +1,53 @@
-# ──────────────────────────────────────────
-# 报告输出目录（体检报告属于运行时产物，不入库）
-# ──────────────────────────────────────────
-reports/*
-# 保留目录结构占位符
-!reports/.gitkeep
-
-# ──────────────────────────────────────────
-# Python 运行时
-# ──────────────────────────────────────────
+# Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
+*.so
 .Python
-*.egg
-*.egg-info/
-dist/
+env/
 build/
+develop-eggs/
+dist/
+downloads/
 eggs/
 .eggs/
-*.so
-*.dylib
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
 
-# 虚拟环境
-.venv/
+# Virtual Environments
 venv/
-env/
-ENV/
 .env
+.venv
 
-# ──────────────────────────────────────────
-# 会话缓存 / 临时文件
-# ──────────────────────────────────────────
-*_session_cache.json
-*_extracted.txt
-*_structured.json
-*.tmp
-*.bak
+# VS Code / IDE
+.vscode/
+.idea/
 *.swp
 *.swo
 
-# ──────────────────────────────────────────
-# IDE / 编辑器
-# ──────────────────────────────────────────
-.vscode/
-.idea/
-*.code-workspace
-
-# ──────────────────────────────────────────
-# WorkBuddy / Skill 工具链内部数据（不公开）
-# ──────────────────────────────────────────
+# Local agent/workspace data
 .workbuddy/
 
-# ──────────────────────────────────────────
-# macOS / Windows 系统文件
-# ──────────────────────────────────────────
+# Reports and Caches (VERY IMPORTANT)
+reports/*
+!reports/.gitkeep
+*_session_cache.json
+
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
-desktop.ini

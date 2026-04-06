@@ -1,28 +1,13 @@
 #!/usr/bin/env python3
 """
-专精特新申报书体检报告 PDF 生成器（自举式 Playwright 版）
-无需手动配置环境，内置自愈下载能力，跨平台极客装载。
+优质中小企业自检报告 PDF 生成器（自举式 Playwright 版）
+无需手动配置环境，内置自愈下载能力，跨平台部署。
 """
 
 import sys
 import subprocess
 import os
 import re
-
-
-def configure_output_streams():
-    """避免 Windows 默认 GBK 控制台在输出 emoji 时触发 UnicodeEncodeError。"""
-    for stream_name in ("stdout", "stderr"):
-        stream = getattr(sys, stream_name, None)
-        if hasattr(stream, "reconfigure"):
-            try:
-                stream.reconfigure(errors="replace")
-            except ValueError:
-                pass
-
-
-configure_output_streams()
-
 
 def ensure_dependencies():
     """环境自愈检查：检测到缺失将自动启动傻瓜式后台安转"""
@@ -280,7 +265,7 @@ def generate_pdf(input_md, output_pdf):
             page.set_content(html_content)
             
             # 使用 Playwright 的原生接口来投射精美的固定页眉和记分牌页脚
-            header_template = '<div style="font-size:8pt; color:#94a3b8; margin-left:2.2cm; font-family:\'PingFang SC\', sans-serif;">专精特新企业多维定性与穿透诊断底稿</div>'
+            header_template = '<div style="font-size:8pt; color:#94a3b8; margin-left:2.2cm; font-family:\'PingFang SC\', sans-serif;">优质中小企业多维定性与穿透诊断底稿</div>'
             footer_template = '<div style="font-size:9pt; color:#64748b; text-align:center; width:100%; font-family:Helvetica, Arial, sans-serif;"><span class="pageNumber"></span> / <span class="totalPages"></span></div>'
             
             page.pdf(
@@ -294,7 +279,7 @@ def generate_pdf(input_md, output_pdf):
             )
             browser.close()
             
-        print(f"✅ 定理：这份极具【麦家/普华】深灰质感的专家级诊断战报，已经免配发出！收下吧：{output_pdf}")
+        print(f"✅ PDF 诊断报告已生成：{output_pdf}")
         return True
     except Exception as e:
         # 捕捉意外情况
@@ -306,7 +291,7 @@ def generate_pdf(input_md, output_pdf):
 
 def main():
     if len(sys.argv) < 3:
-        print("魔法开关口语：python generate_diagnosis_pdf.py <你要转的.md文件> <转头出来的.pdf>")
+        print("用法：python generate_diagnosis_pdf.py <体检报告.md> <输出.pdf>")
         sys.exit(1)
     
     input_md = sys.argv[1]
