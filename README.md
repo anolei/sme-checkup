@@ -61,7 +61,7 @@ playwright install chromium
 
 ### 2. 放入 Skills 目录
 
-将 `open-application-checkup/` 文件夹放入 AI Agent 工作空间的 `skills/` 目录下。
+将 `sme-checkup/` 文件夹放入 AI Agent 工作空间的 `skills/` 目录下。
 
 ### 3. 直接调用
 
@@ -153,7 +153,7 @@ Skill 将按照预设流程自动完成：
 ## 项目架构
 
 ```text
-open-application-checkup/
+sme-checkup/
 ├── SKILL.md                        # 技能主指令入口（核心工作流引擎）
 ├── README.md                       # 本说明文件
 ├── LICENSE                         # MIT 开源协议许可
